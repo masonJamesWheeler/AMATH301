@@ -1,0 +1,197 @@
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=0.75in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{physics}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage[numbered,framed]{matlab-prettifier}
+\usepackage{MnSymbol,wasysym}
+
+\usepackage{filecontents}
+\def\firstcircle{(90:4cm) circle (4.5cm)}
+\def\secondcircle{(200:3cm) circle (4.5cm)}
+\def\thirdcircle{(340:3cm) circle (4.5cm)}
+
+\newcommand{\N}{\mathbb{N}}
+% Bold for vectors and matrices
+\newcommand\vect[1]{\mathbf{#1}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\theenumi}{\alph{enumi}}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][\large Exercise]{\begin{trivlist}
+\item[\centering \Large \hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+
+\setcounter{MaxMatrixCols}{20} 
+
+
+
+\usepackage{xcolor}
+\colorlet{kw}{blue}
+\definecolor{com}{rgb}{0,0.6,0.3}
+
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+% redefine keywords
+\algrenewcommand\algorithmicfunction{\textcolor{kw}{function}}
+\algrenewcommand\algorithmicwhile{\textcolor{kw}{while}}
+\algrenewcommand\algorithmicfor{\textcolor{kw}{for}}
+\algrenewcommand\algorithmicif{\textcolor{kw}{if}}
+\algrenewcommand\algorithmicelse{\textcolor{kw}{else}}
+\algrenewcommand\algorithmicend{\textcolor{kw}{end}}
+
+% new keywords
+\algnewcommand\Break{\textcolor{kw}{break}}%
+\algnewcommand\Continue{\textcolor{kw}{continue}}%
+
+% redefine loops
+\algdef{SE}[WHILE]{While}{EndWhile}[1]{\algorithmicwhile\ #1}{\algorithmicend}%
+\algdef{SE}[FOR]{For}{EndFor}[1]{\algorithmicfor\ #1}{\algorithmicend}%
+\algdef{SE}[IF]{IF}{EndFor}[1]{\algorithmicif\ #1 }{\algorithmicend}%
+
+% redefine comments
+\algrenewcommand{\algorithmiccomment}[1]{{\color{com}\%#1}}
+
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+ 
+\title{\textbf{Homework 1.}}%replace X with the appropriate number
+\author{Amath 301 \\ Beginning Scientific Computing} %if necessary, replace with your course title
+\date{\normalsize $\copyright$ Ryan Creedon, University of Washington \\~\\ \large Due: 4/4/23 at 11:59pm to Gradescope}
+\maketitle
+\noindent \underline{\textbf{Directions}}: \\\\  For the \textbf{written exercises} of the homework, please do the following:
+\begin{itemize}
+    \item Write your name, student number, and section at the top of your written exercises. A half point will be deducted if these are not included.
+    \item Complete all written exercises to the best of your ability and as neatly as possible.
+    \item For those who are writing their answers by hand, please scan your work and save it as a pdf file. 
+    \item You are encouraged to type your written homework using \LaTeX. Doing so will earn you a half bonus point. Check out my \LaTeX~ beginner document and overleaf.com if you are new to \LaTeX. 
+\end{itemize}
+For the \textbf{coding exercises} of the homework, please do the following:
+\begin{itemize}
+    \item Create a MATLAB script titled \verb|hw1.m| and divide your script into sections according to the various coding exercises.
+    \item Make sure your final answers in each coding exercise are assigned to the correct variable names. 
+    \item Publish your script as a pdf file. You can do this by typing \verb|publish(`hw1.m',`pdf')| in the Command Window. 
+    \item Attach your published code to the end of your written exercises. Submit your entire homework assignment (written + coding exercises) to Gradescope.  
+\end{itemize}
+\underline{\textbf{Pro-Tips}}: \\ \begin{itemize} \item You can check many of your answers to the written exercises of this homework by having MATLAB, Wolfram Alpha, or Chat GPT do the calculations for you. \item Teamwork makes the dream work, but please make sure you write up your solutions. \item Don't wait until the last minute.  \smiley{} \\ \end{itemize} \clearpage
+\hrule
+\begin{center}\Large \textbf{Written Exercises} \\ \normalsize (14 points total) \normalsize \end{center} \vspace*{0.2cm}
+\begin{exercise}{\large 1} {\large (Component Skill 1.1)} ~\\\\
+A chemist must determine the coefficients $x_j$ (for $1 \leq j \leq 5$) that balance the reaction
+\begin{align*}
+  x_1 \textrm{Cu} + x_2 \textrm{HNO}_3 \rightarrow x_3\textrm{Cu}(\textrm{NO}_3)_2 + x_4 \textrm{NO} + x_5 \textrm{H}_2\textrm{O}.
+\end{align*}
+In order to balance this reaction, there must be an equal number of each element on both sides of the reaction. 
+\begin{enumerate}
+    \item  Use this information to derive a linear system satisfied by the unknown coefficients $x_j$. \\\\
+    \textbf{Hint}: Derive an equation that balances each element.  \\
+   
+    \item What are the dimensions of this system? 
+    
+    \item Is this system overdetermined, square, or underdetermined? Based on your answer, is it most likely this system has no solution, a unique solution, or infinitely many solutions?
+\end{enumerate}
+\vspace{1cm}
+\begin{exercise}{\large 2} {\large (Component Skill 1.2)} ~\\\\
+Express the linear system in \textbf{Exercise 1} in matrix-vector form and as an augmented matrix.
+\end{exercise}
+\end{exercise} \vspace{1cm}
+\begin{exercise}{\large 3} {\large (Component Skill 1.3)} ~\\\\
+Consider the following matrices:
+\begin{align*}
+\textrm{\bf A} = \begin{pmatrix} 1 & 2 \\ 0 & 1 \end{pmatrix}, \quad \quad \textrm{\bf B} = \begin{pmatrix} 1 & 2 \\ -1 & 0 \\ 3 & 1 \end{pmatrix}, \quad \quad \textrm{\bf C} = \begin{pmatrix} 3 & 1 & -1 \\ 1 & 2 & 0 \end{pmatrix}, \quad \quad \textrm{\bf D} = \begin{pmatrix} 1 & -2 \\ 0 & 1 \end{pmatrix}.
+\end{align*}
+\begin{enumerate}
+\item Does $\textrm{\bf A} + \textrm{\bf B}$ exist? Why or why not?
+\item Compute $\frac12 \textrm{\bf A} + \frac12 \textrm{\bf B}$. 
+\item Does $\textrm{\bf AB}$ exist? Why or why not?
+\item Compute $\textrm{\bf AB}^T$.
+\item Do \textrm{\bf B} and \textrm{\bf C} commute? (That is, does $\textrm{\bf BC} = \textrm{\bf CB}$?)
+\item Compute $(\textrm{\bf AC})^T - \textrm{\bf BA}$.
+\item Are $\textrm{\bf A}$ and $\textrm{\bf D}$ inverses of each other? Why or why not?
+\end{enumerate}
+\end{exercise} 
+\clearpage
+\hrule
+\begin{center}\Large \textbf{Coding Exercises} \\ \normalsize (6 points total) \normalsize \end{center}
+\vspace*{0.2cm}
+\begin{exercise}{\large 1} {\large (Component Skill 1.4)} ~\\\\
+Compute $\sqrt{2 + e^{(\ln(1+\sin(\pi/5)))^2}}$ in MATLAB. Use \verb|format long| to have MATLAB display as many decimal places as possible. Assign the value of this number to the variable \verb|A1|. \\\\
+\underline{Answer}: \verb|A1|$~= 1.799534224598285$.
+\end{exercise}
+
+\vspace{1cm}
+
+\begin{exercise}{\large 2} {\large (Component Skill 1.5)} ~\\\\
+Create the $5 \times 1$ row vector \begin{align*}[\cos(0),\cos(\pi/4),\cos(\pi/2),\cos(3\pi/4),\cos(\pi)].
+\end{align*}
+Assign the variable \verb|A2| to this row vector. Use \verb|format short| to have MATLAB display only 4 decimal places. Use \verb|format short| for all remaining exercises. \\\\
+\underline{Answer}: \verb|A2|$~= [1.0000, ~0.7071, ~0.0000, ~-0.7071, ~-1.0000]$.
+\end{exercise}
+
+\vspace{1cm}
+\begin{exercise}{\large 3} {\large (Component Skill 1.5)} ~\\\\
+Use the colon operator \verb|:| to create a $91 \times 1$ column vector \verb|z| whose first entry is $-6$, whose last entry is $3$, and whose entries in between are spaced $0.1$ apart from each other. Using \verb|z| and the colon operator, create a new column vector that consists of every third entry in \verb|z|, \emph{i.e.}, create the column vector \verb|[z(3) ; z(6) ; z(9) ; ...]|. Assign this column vector to the variable \verb|A3|. \\\\
+\textbf{Hint}: The third input of the colon operator can either be \verb|end| or the length of \verb|z|. \\\\
+\underline{Answer}: \verb|A3|$~= [-5.800;~-5.5000;~-5.2000; \quad \cdots \quad 2.3000; ~2.6000; ~ 2.9000]$.
+\end{exercise}
+
+\vspace{1cm}
+\begin{exercise}{\large 4} {\large (Component Skill 1.5)} ~\\\\
+Use the colon operator \verb|:| or \verb|linspace| function to create the vectors {\bf u} and {\bf v}, where {\bf u} is a row vector consisting of 6 equally spaced entries beginning with $3$ and ending with $4$ and where 
+\begin{align*}
+    \textrm{\bf v} = [0,0.75,1.5,2.25,3.0,3.75].
+\end{align*}
+\begin{enumerate}
+    \item Using the appropriate MATLAB commands, cube every entry of {\bf u}. Assign the resulting row vector to the variable \verb|A4|.
+    \\\\
+\underline{Answer}: \verb|A4|$~= [27.0000,~32.7680,~39.3040, ~46.6560, ~54.8720, ~ 64.0000]$. \\
+    \item Using the appropriate MATLAB commands, compute $\sin(\textrm{\bf u}) + e^{\textrm{\bf v}}$. Here, the functions sin($\cdot$) and e$^{(\cdot)}$ act on each entry of a vector. Assign the resulting row vector to the variable \verb|A5|.   \\\\
+\underline{Answer}: \verb|A5|$~= [1.1411,~2.0586,~4.2261, ~9.0452, ~19.4737, ~ 41.7643]$. \\
+    \item Using the appropriate MATLAB commands, compute $\textrm{\bf u}^T\textrm{\bf v}$. Assign the $(5,6)$th entry of this matrix to the variable \verb|A6|. \\\\
+    \textbf{Note}: {\bf u} and {\bf v} are not column vectors, so this isn't the dot product. \\\\
+\underline{Answer}: \verb|A6|$~= 14.2500$. \\
+\end{enumerate}
+\vspace{1cm}
+%\begin{exercise}{\large 4} {\large (Component Skill 1.4)} ~\\\\
+%Assign the variable \verb|H| to the command \verb|hilb(50)|. This will assign \verb|H| to a $50 \times 50$ matrix whose $(i,j)$th entry equals $1/(i+j-1)$. A matrix of this form is called a \emph{Hilbert matrix}. 
+%\begin{enumerate}
+ %   \item Using the appropriate MATLAB commands, assign the $36$th column of \verb|H| to the variable \verb|A6|.
+  %  \item Using the appropriate MATLAB commands, assign the $14$th row of \verb|H| to the variable \verb|A7|.
+  %  \item Using the appropriate MATLAB commands, assign the even columns of \verb|H| to the variable \verb|A8|.
+   % \item Using the appropriate MATLAB commands, assign the odd rows of \verb|H| to the variable \verb|A9|. 
+   % \item Using the appropriate MATLAB commands, create a $4 \times 4$ submatrix of \verb|H| consisting of entries that are in the $23$rd and $27$th columns of \verb|H| and $23$rd and $27$th rows of \verb|H|. Assign your submatrix to the variable \verb|A10|. 
+%\end{enumerate}
+
+\end{exercise}
+\end{document}
